@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year My Love ❤️</title>
+
+<style>
+:root{
+    --pink:#ff9eb5;
+    --rose:#ffcad4;
+    --peach:#ffe5d9;
+    --text:#5a2a3c;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Georgia',serif;
+    min-height:100vh;
+    background:radial-gradient(circle at top,#fff,var(--peach),var(--rose));
+    color:var(--text);
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+}
+
+.container{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    position:relative;
+    z-index:5;
+}
+
+.step{
+    display:none;
+    max-width:520px;
+    width:100%;
+    text-align:center;
+    animation:fadeUp 1s cubic-bezier(.4,0,.2,1);
+}
+
+.step.active{display:block;}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(30px);}
+    to{opacity:1;transform:none;}
+}
+
+h1{
+    font-size:2.3em;
+    margin-bottom:20px;
+    color:#b03060;
+}
+
+.question{
+    font-size:1.3em;
+    margin-bottom:20px;
+}
+
+input,textarea{
+    width:100%;
+    padding:14px;
+    border-radius:30px;
+    border:2px solid var(--pink);
+    background:rgba(255,255,255,.7);
+    font-size:1.05em;
+    text-align:center;
+    margin-bottom:18px;
+    outline:none;
+}
+
+textarea{border-radius:20px;resize:none;min-height:110px;}
+
+.btn{
+    padding:14px 36px;
+    border-radius:30px;
+    border:none;
+    font-size:1.1em;
+    background:linear-gradient(135deg,var(--pink),#ff6f91);
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(255,111,145,.5);
+}
+
+.btn:hover{transform:scale(1.05);}
+
+/* BIG HEART */
+.big-heart{
+    font-size:140px;
+    cursor:pointer;
+    animation:pulse 1.5s infinite;
+    user-select:none;
+}
+
+@keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.15);}
+}
+
+.pop{animation:pop .5s forwards;}
+
+@keyframes pop{
+    to{transform:scale(2);opacity:0;}
+}
+
+/* MESSAGE */
+.message-box{
+    background:rgba(255,255,255,.85);
+    padding:28px;
+    border-radius:24px;
+    box-shadow:0 0 40px rgba(255,182,193,.7);
+}
+
+.message-text{
+    font-size:1.15em;
+    line-height:1.7;
+}
+
+/* TIMER */
+.love-timer{
+    margin-top:18px;
+    padding:16px;
+    border-radius:18px;
+    background:rgba(255,182,193,.35);
+    box-shadow:0 0 25px rgba(255,143,163,.6);
+}
+
+.love-timer h2{
+    font-size:1.15em;
+    margin-bottom:6px;
+    color:#b03060;
+}
+
+#timer{font-weight:bold;}
+
+/* FINAL QUESTION */
+.final-question{
+    margin-top:20px;
+    padding:20px;
+    border-radius:20px;
+    background:rgba(255,255,255,.7);
+    box-shadow:0 0 25px rgba(255,182,193,.6);
+}
+
+/* PHOTO */
+.photo-container{
+    margin-top:25px;
+    max-width:360px;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 0 35px rgba(255,182,193,.8);
+}
+
+.photo-container img{
+    width:100%;
+    height:auto;
+    display:block;
+    filter:blur(12px);
+    transition:filter 1.2s ease;
+}
+
+.photo-container img.unblur{
+    filter:blur(0);
+}
+
+@media(max-width:600px){
+    h1{font-size:2em;}
+    .big-heart{font-size:110px;}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="container">
+
+<div id="step1" class="step active">
+    <h1>✨ A Sweet Start ✨</h1>
+    <p class="question">What's your name, my love?</p>
+    <input id="nameInput" placeholder="Your beautiful name">
+    <button class="btn" onclick="next(1)">Continue 💕</button>
+</div>
+
+<div id="step2" class="step">
+    <h1>💖 One Question 💖</h1>
+    <p class="question">What do you like in me?</p>
+    <textarea id="likeInput" placeholder="From your heart..."></textarea>
+    <button class="btn" onclick="next(2)">Next 💗</button>
+</div>
+
+<div id="step3" class="step">
+    <h1>💝 Touch My Heart 💝</h1>
+    <p class="question">Tap the heart below ❤️</p>
+    <div class="big-heart" onclick="reveal(this)">❤️</div>
+</div>
+
+<div id="step4" class="step">
+    <div class="message-box">
+        <h1>Happy New Year, <span id="showName"></span> 🎊</h1>
+
+        <p class="message-text">
+            Priya raa… my cute little chubby panda 🐼❤️<br><br>
+            I know you go silent when hurt, but please remember—
+            even when I look helpless, my heart never leaves you.
+            <br><br>
+            Go into silence if you must… but don’t stay in darkness.
+            Come back. I’ll always be here ❤️
+        </p>
+
+        <div class="love-timer">
+            <h2>⏳ Since We First Met 💖</h2>
+            <p id="timer"></p>
+        </div>
+
+        <div class="final-question">
+            <p class="question">
+                One last question 💕<br>
+                What is my full name <small>(not with surname)</small>?
+            </p>
+            <input id="finalAnswer" placeholder="Type your answer ❤️">
+            <button class="btn" onclick="checkAnswer()">Unlock Memory 💖</button>
+        </div>
+    </div>
+
+    <div class="photo-container">
+        <img src="our_meory.png" id="memoryPhoto">
+    </div>
+</div>
+
+</div>
+
+<script>
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let name="";
+const firstMeetDate=new Date(2022,3,13,10,30,0);
+
+/* STEPS */
+function next(n){
+    if(n===1){
+        name=nameInput.value.trim();
+        if(!name) return alert("Tell me your name ❤️");
+        step1.classList.remove("active");
+        step2.classList.add("active");
+    }
+    if(n===2){
+        if(!likeInput.value.trim()) return alert("Write something sweet 💕");
+        step2.classList.remove("active");
+        step3.classList.add("active");
+    }
+}
+
+function reveal(el){
+    el.classList.add("pop");
+    startFireworks();
+    setTimeout(()=>{
+        step3.classList.remove("active");
+        step4.classList.add("active");
+        showName.textContent=name;
+        startLoveTimer();
+    },500);
+}
+
+/* TIMER */
+function startLoveTimer(){
+    setInterval(()=>{
+        const now=new Date();
+        let diff=now-firstMeetDate;
+
+        const s=Math.floor(diff/1000)%60;
+        const m=Math.floor(diff/60000)%60;
+        const h=Math.floor(diff/3600000)%24;
+        let d=Math.floor(diff/86400000);
+        let mo=Math.floor(d/30);
+        let y=Math.floor(mo/12);
+        d%=30; mo%=12;
+
+        timer.innerHTML=
+        `${y} years, ${mo} months, ${d} days<br>
+         ${h} hours, ${m} minutes, ${s} seconds 💕`;
+    },1000);
+}
+
+/* PHOTO UNLOCK */
+function checkAnswer(){
+    const ans=finalAnswer.value.trim().toLowerCase();
+    if(ans!=="sivaprasad"){
+        alert("Almost 😘 Try again with love ❤️");
+        return;
+    }
+    const img=document.getElementById("memoryPhoto");
+    img.classList.add("unblur");
+    img.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+/* FIREWORKS */
+let particles=[];
+function startFireworks(){
+    setInterval(()=>{
+        const x=Math.random()*canvas.width;
+        const y=Math.random()*canvas.height*0.5;
+        for(let i=0;i<25;i++){
+            particles.push({
+                x,y,
+                vx:(Math.random()-.5)*5,
+                vy:(Math.random()-.5)*5,
+                a:1,
+                c:`hsl(${330+Math.random()*30},100%,75%)`
+            });
+        }
+    },700);
+}
+
+function animate(){
+    ctx.fillStyle="rgba(255,255,255,0.25)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,i)=>{
+        p.x+=p.vx; p.y+=p.vy; p.a-=0.015;
+        ctx.globalAlpha=p.a;
+        ctx.fillStyle=p.c;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,3,0,Math.PI*2);
+        ctx.fill();
+        if(p.a<=0) particles.splice(i,1);
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
+</script>
+
+</body>
+</html>
